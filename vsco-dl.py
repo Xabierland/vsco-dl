@@ -53,6 +53,7 @@ def load_page(url):
         if new_height == last_height:
             break
         last_height = new_height
+
     # Obtén todo el HTML de la página
     html = driver.page_source
     # Cierra el navegador web
@@ -66,7 +67,7 @@ def get_media_url(html):
     links = soup.find_all('a', href=lambda href: href and '/media/' in href)
     return links
     
-#Download a photo
+#Descarga las fotos que recibe por parametro en la carpeta creada
 def download_photos(media,folder_name):
     id=0
     for photo in media:
@@ -80,27 +81,26 @@ def download_photos(media,folder_name):
         with open(folder_name+"/"+str(id)+'.jpg', "wb") as f:
             f.write(response.content)
 
-#Ask for the profile URL, create a folder with the profile name and safe all the photos in the gallery there.
+
 def main():
-    #Ask for the profile URL
+    #Pregunta por la URL
     print("Insert the URL")
     print("Example:(https://vsco.co/Xabierland/gallery)")
     url=input("--> ")
-    #Create a folder with the profile name
+    #Crea la carpeta
     print("Creando carpeta...")
     folder_name=create_folder(url)
-    #Get the web html
+    #Descarga el html
     print("Descargando la pagina web...")
     html=load_page(url)
-    #Get all image URLs
+    #Obtiene los links de las fotos
     print("Seleccionando fotografias...")
     media=get_media_url(html)
-    #Download all the photos from their URLs into the folder
+    #Descarga todas las fotos en la carpeta
     print("Descargando fotografias...")
     download_photos(media,folder_name)
     print("Listo!\n")
     
 
 if __name__=='__main__':
-    #Create the img folder in case it doesn't exit.
     main()
