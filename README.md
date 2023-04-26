@@ -1,2 +1,2 @@
 # vsco-dl
- Download all photos from a vsco profile.
+Descarga todas las fotos de un perfil de VSCO rápidamente.
