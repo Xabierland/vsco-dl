@@ -1,5 +1,6 @@
 # vsco-dl
 Descarga todas las fotos de un perfil de VSCO rápidamente.
+Este no es un proyecto serio, simplemente lo he hecho para aprender web scraping, eres libre para hacer lo que quieras con el.
 
 ## Instalaccion y uso
 
