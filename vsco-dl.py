@@ -10,7 +10,22 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse, urljoin
-import os, requests, time
+import os, requests, time, argparse
+
+
+def parse_arguments():
+    # Definir los argumentos con sus valores por defecto
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-t", "--time", type=float, default=0.5, help="El valor por defecto es 0.5 pero puedes aumentarlo si la velocidad de tu internet es mala.")
+    parser.add_argument("-H", "--headerless", action="store_true", default=False, help="Ejecuta el navegador en modo headless (Puede provocar errores)")
+
+    # Analizar los argumentos de la línea de comandos
+    args = parser.parse_args()
+
+    # Asignar los valores de los argumentos a variables globales
+    global t, headerless
+    t = args.time
+    headerless = args.headerless
 
 #Mediante la url que recibe como parametro esta funcion crea un carpeta con dicho nombre donde se descargaran
 #posteriormente todas las fotografias que descargue el programa
@@ -30,25 +45,26 @@ def load_page(url):
     # Configuro y inicia el navegador Selenium
     options = Options()
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    options.add_argument('--headless')  # Ejecuta el navegador en modo headless
+    if headerless:
+        options.add_argument('--headless')  # Ejecuta el navegador en modo headless
     driver = webdriver.Chrome(options=options)
     
     # Navega a la página web que quieres procesar
     driver.get(url)
 
     # Haz clic en el boton "Reject All" de las cookies
-    time.sleep(1)
+    time.sleep(t)
     driver.find_element(By.ID, "onetrust-reject-all-handler").click()
 
     # Haz clic en el boton "Cargar más"
-    time.sleep(1)
+    time.sleep(t)
     driver.find_element(By.CSS_SELECTOR, 'button.css-178kg8n.e1xqpt600').click()
 
     # Haz scroll hacia abajo hasta el final de la página
     while True:
         last_height = driver.execute_script("return document.body.scrollHeight")
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        time.sleep(1)  # Espera a que se cargue el contenido dinámicamente
+        time.sleep(t)  # Espera a que se cargue el contenido dinámicamente
         new_height = driver.execute_script("return document.body.scrollHeight")
         if new_height == last_height:
             break
@@ -103,4 +119,5 @@ def main():
     
 
 if __name__=='__main__':
+    parse_arguments()
     main()
