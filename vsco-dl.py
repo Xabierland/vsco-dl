@@ -16,7 +16,7 @@ import os, requests, time, argparse
 def parse_arguments():
     # Definir los argumentos con sus valores por defecto
     parser = argparse.ArgumentParser()
-    parser.add_argument("-t", "--time", type=float, default=0.5, help="El valor por defecto es 0.5 pero puedes aumentarlo si la velocidad de tu internet es mala.")
+    parser.add_argument("-t", "--time", type=float, default=1, help="El valor por defecto es 1 pero puedes aumentarlo si la velocidad de tu internet es mala.")
     parser.add_argument("-H", "--headerless", action="store_true", default=False, help="Ejecuta el navegador en modo headless (Puede provocar errores)")
 
     # Analizar los argumentos de la línea de comandos
